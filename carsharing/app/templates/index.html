@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Carsharing{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Carsharing</h1>
+        <nav>
+            <a href="/">Главная</a>
+            <a href="/cars">Машины</a>
+            <a href="/fines">Штрафы</a>
+            <a href="/login">Войти</a>
+            <a href="/register">Регистрация</a>
+        </nav>
+    </header>
+        <main>
+        {% block content %}
+        <h2>Сводная статистика</h2>
+        <div class="statistics">
+            <p><strong>Количество клиентов:</strong> {{ num_clients }}</p>
+            <p><strong>Количество машин:</strong> {{ num_cars }}</p>
+            <p><strong>Количество штрафов:</strong> {{ num_fines }}</p>
+        </div>
+        {% endblock %}
+        </main>
+</body>
+</html>
+

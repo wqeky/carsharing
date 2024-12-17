@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список штрафов</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-form {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .filter-form label {
+            font-size: 16px;
+        }
+
+        .filter-form input[type="range"] {
+            width: 80%;
+        }
+
+        .filter-form .value {
+            width: 50px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .filter-form button {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+
+        .filter-form button:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table th, table td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        table td {
+            background-color: #fafafa;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: center;
+        }
+
+        .actions button {
+            padding: 6px 12px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .actions button:hover {
+            background-color: #c82333;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .pagination a {
+            padding: 8px 16px;
+            margin: 0 5px;
+            text-decoration: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 4px;
+        }
+
+        .pagination a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Список штрафов</h2>
+
+    <!-- Форма для фильтрации с бегунком -->
+    <form class="filter-form" method="GET" action="/fines">
+        <label for="amount_filter">Фильтровать по сумме:</label>
+        <input type="range" id="amount_filter" name="amount_filter" min="0" max="5000" value="{{ amount_filter }}" step="100" oninput="document.getElementById('amount_value').textContent = this.value">
+        <span class="value" id="amount_value">{{ amount_filter }}</span> ₽
+        <button type="submit">Применить фильтр</button>
+    </form>
+
+    <!-- Таблица с штрафами -->
+    <table>
+        <thead>
+            <tr>
+                <th>Описание</th>
+                <th>Сумма</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for fine in fines.items %}
+                <tr>
+                    <td>{{ fine.description }}</td>
+                    <td>{{ fine.amount }} ₽</td>
+                    <td class="actions">
+                        <form method="POST" action="{{ url_for('delete_fine', fine_id=fine.fine_id) }}">
+                            <button type="submit">Удалить</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Пагинация -->
+    <div class="pagination">
+        {% if fines.has_prev %}
+            <a href="{{ url_for('fines', page=fines.prev_num, amount_filter=amount_filter) }}">« Предыдущая</a>
+        {% endif %}
+        {% if fines.has_next %}
+            <a href="{{ url_for('fines', page=fines.next_num, amount_filter=amount_filter) }}">Следующая »</a>
+        {% endif %}
+    </div>
+</div>
+
+</body>
+</html>

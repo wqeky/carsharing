@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Добавить машину{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mt-4">Добавить машину</h2>
+    <form method="POST" action="{{ url_for('add_car') }}">
+        <div class="mb-3">
+            <label for="model" class="form-label">Модель</label>
+            <input type="text" id="model" name="model" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="status" class="form-label">Статус</label>
+            <select id="status" name="status" class="form-select" required>
+                <option value="Available">Доступна</option>
+                <option value="In Use">В использовании</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="location" class="form-label">Местоположение</label>
+            <input type="text" id="location" name="location" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="license_plate" class="form-label">Номерной знак</label>
+            <input type="text" id="license_plate" name="license_plate" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Добавить</button>
+    </form>
+</div>
+{% endblock %}
